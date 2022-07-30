@@ -51,11 +51,9 @@
                 defaultColDef: { sortable: true, filter: true, width: 100, resizable: true },
                 sortingOrder: ["desc", "asc", null],
             }
-            const gridDOM = new agGrid.Grid(document.getElementById("grid"), grid)
-            gridDOM.style.opacity = "0.5"
+            new agGrid.Grid(document.getElementById("grid"), grid)
             const data = await fetch("data/comment-per-series-ranking.json").then(res => res.json())
             grid.api.setRowData(data)
-            gridDOM.style.opacity = undefined
             grid.api.setFilterModel({
                 count: {
                     filterType: "number",
