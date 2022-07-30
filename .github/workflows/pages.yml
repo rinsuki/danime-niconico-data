@@ -28,6 +28,7 @@ jobs:
       - run: python3 tools/csv-to-sqlite.py
       - name: Make data/data.sqlite3.gz
         run: mkdir -p public/data && gzip -9 --to-stdout data.sqlite3 > public/data/data.sqlite3.gz
+      - run: python3 tools/gen-public-data.py
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v1
         with:

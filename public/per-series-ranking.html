@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/ag-grid-community@28.0.2/dist/styles/ag-grid.min.css">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/ag-grid-community@28.0.2/dist/styles/ag-theme-balham.min.css">
+        <script src="https://cdn.jsdelivr.net/npm/ag-grid-community@28.0.2/dist/ag-grid-community.min.noStyle.js"></script>
+        <style>
+            a { color: #4365ff; }
+            a.hover-link:hover {
+                position: fixed;
+                z-index: 99999999;
+                background: rgba(255, 255, 255, 0.9);
+                border: 1px solid #aaa;
+                margin: -1px calc(-0.5em - 1px);
+                padding: 0 0.5em;
+            }
+        </style>
+        <title>【非公式】dアニメストア ニコニコ支店 シリーズ毎ランキング</title>
+    </head>
+    <body>
+        <h1>【非公式】dアニメストア ニコニコ支店 シリーズ毎ランキング</h1>
+        <p><a href="https://ch.nicovideo.jp/danime/video">https://ch.nicovideo.jp/danime/video</a> での並び換えだと各話ごとにしか並べられないので、シリーズ毎に並べられるものを作りました</p>
+        <p>とりあえずコメント数だけ</p>
+        <p><a href="./">戻る</a></p>
+        <div id="grid" style="height: calc(100vh - 16px - 20em);" class="ag-theme-balham"></div>
+        <script type="module">
+            const data = await fetch("data/comment-per-series-ranking.json").then(res => res.json())
+            const grid = {
+                columnDefs: [
+                    { headerName: "シリーズ", field: "title", width: 300, cellRenderer: params => {
+                        const anchor = document.createElement("a")
+                        anchor.href = `https://www.nicovideo.jp/series/${params.data.id}`
+                        anchor.textContent = params.data.title
+                        anchor.title = params.data.title
+                        anchor.classList.add("hover-link")
+                        anchor.target = "_blank"
+                        return anchor
+                    } },
+                    { headerName: "動画数", field: "count", width: 100, filter: "agNumberColumnFilter" },
+                    {
+                        headerName: "コメント (引用を含まない)",
+                        children: [
+                            { headerName: "全動画", field: "all_comment_count", filter: "agNumberColumnFilter" },
+                            { headerName: "最大", field: "max_comment_count", filter: "agNumberColumnFilter" },
+                            { headerName: "平均", field: "avg_comment_count", filter: "agNumberColumnFilter" },
+                            { headerName: "中央値", field: "median_comment_count", filter: "agNumberColumnFilter", sort: "desc" },
+                            { headerName: "最大÷中央値", field: "max_median_mag_comment_count", filter: "agNumberColumnFilter", width: 150 },
+                        ]
+                    }
+                ],
+                defaultColDef: { sortable: true, filter: true, width: 100, resizable: true },
+                sortingOrder: ["desc", "asc", null],
+            }
+            new agGrid.Grid(document.getElementById("grid"), grid)
+            grid.api.setRowData(data)
+            grid.api.setFilterModel({
+                count: {
+                    filterType: "number",
+                    type: "greaterThan",
+                    filter: 1,
+                }
+            })
+        </script>
+    </body>
+</html>
