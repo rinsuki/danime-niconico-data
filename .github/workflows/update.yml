@@ -10,15 +10,18 @@ jobs:
     runs-on: ubuntu-22.04
     steps:
     - uses: actions/checkout@v2
-    - run: |
+    - name: Setup
+      run: |
         set -xe
         git config --global user.name "GitHub Actions"
         git config --global user.email "github-actions@github.com"
         pip3 install lxml
-        python3 csv-to-sqlite.py
-        python3 dump-series-first.py
-        python3 dump-shiten-ids-from-snapshot.py
-        python3 sqlite-to-csv.py
+    - run: python3 csv-to-sqlite.py
+    - run: python3 dump-series-first.py
+    - run: python3 dump-shiten-ids-from-snapshot.py
+    - run: python3 sqlite-to-csv.py
+    - name: Upload
+      run: |
         git add -A
         git commit -m "Update Data ($(date +"%Y-%m-%dT%H:%M:%SZ"))"
         git push origin master
