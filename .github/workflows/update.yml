@@ -10,6 +10,8 @@ jobs:
     runs-on: ubuntu-22.04
     steps:
     - uses: actions/checkout@v2
+      with:
+        ssh-key: '${{ secrets.GIT_SSH_KEY }}'
     - name: Setup
       run: |
         set -xe
