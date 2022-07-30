@@ -25,4 +25,6 @@ jobs:
         echo "$(date +"%Y-%m-%dT%H:%M:%SZ")" > last_update_by_ci.txt
         git add -A
         git commit -m "Update Data ($(date +"%Y-%m-%dT%H:%M:%SZ"))"
+        git fetch
+        git rebase origin/master
         git push origin master
