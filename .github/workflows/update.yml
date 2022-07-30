@@ -14,7 +14,7 @@ jobs:
       run: |
         set -xe
         git config --global user.name "GitHub Actions"
-        git config --global user.email "github-actions@github.com"
+        git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
         pip3 install lxml
     - run: python3 csv-to-sqlite.py
     - run: python3 dump-series-first.py
