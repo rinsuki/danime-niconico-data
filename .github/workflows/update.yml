@@ -22,6 +22,7 @@ jobs:
     - run: python3 sqlite-to-csv.py
     - name: Upload
       run: |
+        echo "$(date +"%Y-%m-%dT%H:%M:%SZ")" > last_update_by_ci.txt
         git add -A
         git commit -m "Update Data ($(date +"%Y-%m-%dT%H:%M:%SZ"))"
         git push origin master
