@@ -25,7 +25,6 @@
         <p><a href="./">戻る</a></p>
         <div id="grid" style="height: calc(100vh - 16px - 20em);" class="ag-theme-balham"></div>
         <script type="module">
-            const data = await fetch("data/comment-per-series-ranking.json").then(res => res.json())
             const grid = {
                 columnDefs: [
                     { headerName: "シリーズ", field: "title", width: 300, cellRenderer: params => {
@@ -52,8 +51,11 @@
                 defaultColDef: { sortable: true, filter: true, width: 100, resizable: true },
                 sortingOrder: ["desc", "asc", null],
             }
-            new agGrid.Grid(document.getElementById("grid"), grid)
+            const gridDOM = new agGrid.Grid(document.getElementById("grid"), grid)
+            gridDOM.style.opacity = "0.5"
+            const data = await fetch("data/comment-per-series-ranking.json").then(res => res.json())
             grid.api.setRowData(data)
+            gridDOM.style.opacity = undefined
             grid.api.setFilterModel({
                 count: {
                     filterType: "number",
