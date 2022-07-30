@@ -14,6 +14,7 @@ jobs:
         set -xe
         git config --global user.name "GitHub Actions"
         git config --global user.email "github-actions@github.com"
+        pip3 install lxml
         python3 csv-to-sqlite.py
         python3 dump-series-first.py
         python3 dump-shiten-ids-from-snapshot.py
