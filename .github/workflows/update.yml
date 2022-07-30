@@ -1,0 +1,23 @@
+title: Update
+
+on:
+  schedule:
+  - cron: '0 3 * * *'
+  workflow_dispatch:
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - run: |
+      set -xe
+      git config --global user.name "GitHub Actions"
+      git config --global user.email "github-actions@github.com"
+      python3 csv-to-sqlite.py
+      python3 dump-series-first.py
+      python3 dump-shiten-ids-from-snapshot.py
+      python3 sqlite-to-csv.py
+      git add -A
+      git commit -m "Update Data ($(date +"%Y-%m-%dT%H:%M:%SZ"))"
+      git push origin master
