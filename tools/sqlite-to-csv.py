@@ -2,6 +2,8 @@ import sqlite3
 import os
 import csv
 import shutil
+import zlib
+import json
 
 def clean_dir(path: str):
     if os.path.exists(path):
@@ -32,8 +34,11 @@ with sqlite3.connect("./data.sqlite3") as db:
             c.writerows(cur.fetchall())
     gcur = db.execute(f"SELECT {VIDEOS_GID} as gid FROM videos GROUP BY gid")
     clean_dir("csv/videos")
+    # gzip はタイムスタンプが入って毎回更新されるので、zlibを使う
+    with open("csv/videos_updated_date.json.zlib.bin", "wb") as f:
+        f.write(zlib.compress(json.dumps(db.execute("SELECT id, updated_at FROM videos").fetchall()).encode("utf-8")))
     for gid, in gcur.fetchall():
-        cur = db.execute(f"SELECT id, start_time, channel_id, length_seconds, title, view_counter, comment_counter, mylist_counter, like_counter, updated_at, thumbnail_url FROM videos WHERE ({VIDEOS_GID}) = ? ORDER BY id ASC", (gid,))
+        cur = db.execute(f"SELECT id, start_time, channel_id, length_seconds, title, view_counter, comment_counter, mylist_counter, like_counter, 'updated_at_was_moved', thumbnail_url FROM videos WHERE ({VIDEOS_GID}) = ? ORDER BY id ASC", (gid,))
         print(gid)
         with open(f"csv/videos/{gid}.csv", "w") as f:
             c = csv.writer(f)

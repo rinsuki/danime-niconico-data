@@ -2,6 +2,8 @@ import sqlite3
 import os
 from glob import iglob
 import csv
+import json
+import zlib
 
 if os.path.exists("./data.sqlite3"):
     os.remove("./data.sqlite3")
@@ -62,5 +64,9 @@ with sqlite3.connect("./data.sqlite3") as db:
         with open(csvpath, "r") as f:
             c = csv.reader(f)
             db.executemany("INSERT INTO videos (id, start_time, channel_id, length_seconds, title, view_counter, comment_counter, mylist_counter, like_counter, updated_at, thumbnail_url) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", c)
+    with open("csv/videos_updated_date.json.zlib.bin", "rb") as f:
+        j = json.loads(zlib.decompress(f.read()).decode("utf-8"))
+        for k, v in j:
+            db.execute("UPDATE videos SET updated_at = ? WHERE id = ?", (v, k))
     # ---
     db.commit()
