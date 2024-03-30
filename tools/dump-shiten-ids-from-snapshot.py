@@ -5,14 +5,14 @@ import sqlite3
 
 offset = 0
 
-updated_at = requests.get("https://api.search.nicovideo.jp/api/v2/snapshot/version").json()["last_modified"]
+updated_at = requests.get("https://snapshot.search.nicovideo.jp/api/v2/snapshot/version").json()["last_modified"]
 # TODO: もう数時間で更新されそうだったら断念する
 
 with sqlite3.connect("./data.sqlite3") as db:
     while True:
         print(offset)
         time.sleep(1)
-        r = requests.get("https://api.search.nicovideo.jp/api/v2/snapshot/video/contents/search", params={
+        r = requests.get("https://snapshot.search.nicovideo.jp/api/v2/snapshot/video/contents/search", params={
             "q": "dアニメストア",
             "targets": "tagsExact",
             "fields": "contentId,channelId,title,viewCounter,commentCounter,mylistCounter,likeCounter,startTime,thumbnailUrl,lengthSeconds",
