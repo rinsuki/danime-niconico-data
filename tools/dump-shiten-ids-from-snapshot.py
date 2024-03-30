@@ -9,6 +9,7 @@ updated_at = requests.get("https://snapshot.search.nicovideo.jp/api/v2/snapshot/
 # TODO: もう数時間で更新されそうだったら断念する
 
 with sqlite3.connect("./data.sqlite3") as db:
+    fail_count = 0
     while True:
         print(offset)
         time.sleep(1)
@@ -20,8 +21,14 @@ with sqlite3.connect("./data.sqlite3") as db:
             "_limit": "100",
             "_offset": offset,
         })
+        if r.status_code == 503:
+            time.sleep(60)
+            fail_count += 1
+            if fail_count < 60:
+                continue
         r.raise_for_status()
         r = r.json()
+        fail_count = 0
         if len(r["data"]) == 0:
             break
         rows = []
