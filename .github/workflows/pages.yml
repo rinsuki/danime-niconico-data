@@ -30,7 +30,7 @@ jobs:
       - name: Make data/data.sqlite3.gz
         run: gzip -9 --to-stdout data.sqlite3 > public/data/data.sqlite3.gz
       - name: Upload artifact
-        uses: actions/upload-pages-artifact@v1
+        uses: actions/upload-pages-artifact@v3
         with:
           path: './public'
       - name: Deploy to GitHub Pages
