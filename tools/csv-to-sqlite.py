@@ -46,7 +46,7 @@ with sqlite3.connect("./data.sqlite3") as db:
     for csvpath in iglob("./csv/series/*.csv"):
         with open(csvpath, "r") as f:
             c = csv.reader(f)
-            db.executemany("INSERT INTO series (id, created_at, title) VALUES (?, ?, ?)", c)
+            db.executemany("INSERT INTO series (id, created_at, title, api_thumbnail_url, api_items_count) VALUES (?, ?, ?, ?, ?)", c)
     db.execute("""
         CREATE TABLE videos (
             id TEXT PRIMARY KEY,

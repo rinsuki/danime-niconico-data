@@ -19,7 +19,7 @@ SERIES_CONTENTS_GID = '(CASE series_id < 100000 WHEN TRUE THEN (series_id/250) +
 VIDEOS_GID = 'SUBSTR(id, 0, LENGTH(id) - 4)'
 
 with sqlite3.connect("./data.sqlite3") as db:
-    cur = db.execute("SELECT id, created_at, title FROM series ORDER BY id ASC")
+    cur = db.execute("SELECT id, created_at, title, api_thumbnail_url, api_items_count FROM series ORDER BY id ASC")
     clean_dir("csv/series")
     with open("csv/series/1.csv", "w") as f:
         c = csv.writer(f)
