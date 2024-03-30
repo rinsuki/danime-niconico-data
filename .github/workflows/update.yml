@@ -19,7 +19,7 @@ jobs:
         git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
         pip3 install lxml
     - run: python3 tools/csv-to-sqlite.py
-    - run: python3 tools/dump-series-first.py
+    - run: python3 tools/dump-series.py
     - run: python3 tools/dump-shiten-ids-from-snapshot.py
     - run: python3 tools/sqlite-to-csv.py
     - name: Upload
