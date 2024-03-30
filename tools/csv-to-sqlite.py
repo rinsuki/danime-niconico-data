@@ -38,7 +38,9 @@ with sqlite3.connect("./data.sqlite3") as db:
         CREATE TABLE series (
             id INTEGER PRIMARY KEY,
             created_at TEXT NOT NULL,
-            title TEXT NOT NULL
+            title TEXT NOT NULL,
+            api_thumbnail_url TEXT NOT NULL DEFAULT '',
+            api_items_count INTEGER NOT NULL DEFAULT 0
         ) STRICT
     """)
     for csvpath in iglob("./csv/series/*.csv"):
