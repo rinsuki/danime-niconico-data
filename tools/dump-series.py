@@ -40,6 +40,6 @@ with sqlite3.connect("./data.sqlite3") as db:
             db.execute("INSERT INTO series(id, created_at, title, api_thumbnail_url, api_items_count) VALUES(?, ?, ?, ?, ?) ON CONFLICT DO UPDATE SET title = EXCLUDED.title, api_thumbnail_url = EXCLUDED.api_thumbnail_url, api_items_count = EXCLUDED.api_items_count", (v["data"]["detail"]["id"], v["data"]["detail"]["createdAt"], v["data"]["detail"]["title"], v["data"]["detail"]["thumbnailUrl"], v["data"]["totalCount"]))
             db.commit()
             count += 1
-        if count > 100:
+        if count > 500:
             print("break")
             break
